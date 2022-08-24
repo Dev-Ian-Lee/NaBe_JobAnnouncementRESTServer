@@ -24,13 +24,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'mysql:mysql-connector-java'
-	implementation 'org.projectlombok:lombok:1.18.20'
+	implementation 'org.projectlombok:lombok:1.18.24'
 	implementation 'junit:junit:4.13.1'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+	implementation 'software.amazon.cryptools:AmazonCorrettoCryptoProvider:1.+:linux-x86_64'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+//	systemProperty 'jasypt.encryptor.password', findProject("jasypt.encryptor.password")
 }
