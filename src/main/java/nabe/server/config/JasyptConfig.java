@@ -12,15 +12,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JasyptConfig {
 
-    @Value("${jasypt.encryptor.password}") // 환경변수 사용 시 주석 처리된 부분 이용
+    // 비밀키의 외부 노출을 막기 위해, 환경 변수 사용
+    @Value("${JASYPT_ENCRYPTOR_PASSWORD}")
     private String encryptKey;
 
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-
-        System.out.println("encryptKey = " + encryptKey);
         config.setPassword(encryptKey);
         config.setAlgorithm("PBEWithMD5AndDES");
         config.setKeyObtentionIterations("1000");
@@ -32,4 +31,5 @@ public class JasyptConfig {
         encryptor.setConfig(config);
         return encryptor;
     }
+
 }

@@ -1,20 +1,25 @@
-package nabe.server;
+package nabe.server.config;
 
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class JasyptTest {
+
+    @Value("${JASYPT_ENCRYPTOR_PASSWORD}")
+    private String encryptKey;
+
     @Test
     public void jasypt_test() {
         String plainText = "hello";
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-        config.setPassword("world");
+        config.setPassword(encryptKey);
         config.setAlgorithm("PBEWithMD5AndDES");
         config.setKeyObtentionIterations("1000");
         config.setPoolSize("1");
