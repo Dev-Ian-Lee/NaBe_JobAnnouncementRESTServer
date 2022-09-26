@@ -2,7 +2,7 @@ name: CI with Docker, SSH
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "ci_test" ]
 
 permissions:
   contents: read
