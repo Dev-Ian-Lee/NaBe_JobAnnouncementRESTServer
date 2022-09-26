@@ -22,4 +22,5 @@ public class ServerApplication {
 
 	// 로컬, DockerHub 이미지 정리
 	// repository secrets update
+	// 로컬, DockerHub 이미지 재생성
 }
