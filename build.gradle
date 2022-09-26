@@ -37,5 +37,5 @@ tasks.named('test') {
 }
 
 jar {
-		duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+		enabled=false
 	}
