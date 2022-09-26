@@ -36,6 +36,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-jar {
-	enabled=false
+tasks {
+	processResources {
+		duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+	}
 }
