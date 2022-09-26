@@ -20,4 +20,5 @@ public class ServerApplication {
 		return builder.build();
 	}
 
+	// 로컬, DockerHub 이미지 정리
 }
