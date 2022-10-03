@@ -15,13 +15,13 @@ public class TestDataInit {
 
     @PostConstruct
     public void init() {
-        SearchHistory history1 = SearchHistory.createCompactSearchHistory(1L, "101000", "84", "1", "8");
-        SearchHistory history2 = SearchHistory.createCompactSearchHistory(1L, "101000", "84", "2", "8");
-        SearchHistory history3 = SearchHistory.createCompactSearchHistory(1L, "102000", "84", "3", "8");
-        SearchHistory history4 = SearchHistory.createCompactSearchHistory(1L, "102000", "72", "1", "7");
-        SearchHistory history5 = SearchHistory.createCompactSearchHistory(1L, "102190", "72", "1", "7");
-        SearchHistory history6 = SearchHistory.createCompactSearchHistory(1L, "102190", "60", "2", "7");
-        SearchHistory history7 = SearchHistory.createCompactSearchHistory(1L, "101010", "60", "3", "0");
+        SearchHistory history3 = SearchHistory.createCompactSearchHistory("memberA", "102000", "84", "3", "8");
+        SearchHistory history4 = SearchHistory.createCompactSearchHistory("memberA", "102000", "72", "1", "7");
+        SearchHistory history2 = SearchHistory.createCompactSearchHistory("memberA", "101000", "84", "2", "8");
+        SearchHistory history1 = SearchHistory.createCompactSearchHistory("memberA", "101000", "84", "1", "8");
+        SearchHistory history5 = SearchHistory.createCompactSearchHistory("memberA", "102190", "72", "1", "7");
+        SearchHistory history6 = SearchHistory.createCompactSearchHistory("memberA", "102190", "60", "2", "7");
+        SearchHistory history7 = SearchHistory.createCompactSearchHistory("memberA", "101010", "60", "3", "0");
 
         searchHistoryRepository.saveSearchHistory(history1);
         searchHistoryRepository.saveSearchHistory(history2);
