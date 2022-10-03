@@ -16,7 +16,7 @@ public class SearchHistory {
     @Id @GeneratedValue
     private Long id;
 
-    private Long memberId;
+    private String memberId;
 
     // 기업명, 공고명, 업직종 키워드, 직무내용에서 검색하고자 하는 검색어
     private String keywords;
@@ -43,7 +43,7 @@ public class SearchHistory {
     private String deadline;
 
     // Setter 대신 생성 메소드 사용(테스트 데이터용)
-    public static SearchHistory createSearchHistory(Long memberId, String keywords, String loc_cd, String job_cd, String job_type, String edu_lv, String published, String deadline) {
+    public static SearchHistory createSearchHistory(String memberId, String keywords, String loc_cd, String job_cd, String job_type, String edu_lv, String published, String deadline) {
         SearchHistory searchHistory = new SearchHistory();
 
         searchHistory.memberId = memberId;
@@ -58,7 +58,7 @@ public class SearchHistory {
         return searchHistory;
     }
 
-    public static SearchHistory createCompactSearchHistory(Long memberId, String loc_cd, String job_cd, String job_type, String edu_lv) {
+    public static SearchHistory createCompactSearchHistory(String memberId, String loc_cd, String job_cd, String job_type, String edu_lv) {
         SearchHistory searchHistory = new SearchHistory();
 
         searchHistory.memberId = memberId;

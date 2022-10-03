@@ -3,6 +3,9 @@ package nabe.server.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nabe.server.domain.SearchHistory;
+import nabe.server.dto.accountApiDTO.AccessTokenValidationDTO;
+import nabe.server.dto.accountApiDTO.AccessTokenValidationResponseDTO;
+import nabe.server.dto.accountApiDTO.ValidationDTO;
 import nabe.server.dto.announcementApiDTO.ResponseDTO;
 import nabe.server.hateoas.HateoasCreator;
 import nabe.server.repository.SearchHistoryRepository;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -40,12 +44,39 @@ public class AnnouncementApiController {
     // 사람인 API에서 사용할 키값
     private final String APP_KEY = "jSzmOzrqgCNGWwUGJbBVBxqIPLxwXRz2ZfUGUtAlQOyUmmr5NTka";
 
-    // Member 서버에서 받을 memberId(차후 수정);
-    private Long memberId = 1L;
+    // 사용자 인증 RestTemplate
+    private final RestTemplate validationRestTemplate;
+
+    // account 서버 endpoint
+    private final String accountApiServerEndPoint = "15.164.210.47:8000/accounts/kakao/userinfo";
+
+    // account 서버에서 사용자의 이메일을 가져와 DB의 memberId로 사용
+    private String memberId = "";
+
+    // access token 검증
+    public void accessTokenValidation(HttpServletRequest request) throws ResponseStatusException {
+
+        try {
+            // account 서버로 전송할 request
+            RequestEntity<AccessTokenValidationDTO> accountServerRequest = RequestEntity
+                    .post(accountApiServerEndPoint)
+                    .body(new AccessTokenValidationDTO(request.getHeader("access-token")));
+
+            ResponseEntity<AccessTokenValidationResponseDTO> response = restTemplate.exchange(accountServerRequest, AccessTokenValidationResponseDTO.class);
+            AccessTokenValidationResponseDTO responseDTO = response.getBody();
+            memberId = responseDTO.getEmail();
+
+        } catch (Exception e) {
+            // account 서버에서 400, 500번대 status 반환 시 예외 처리
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비인가된 사용자");
+        }
+    }
 
     // 채용공고 목록 조회
     @GetMapping("/announcements")
     public ResponseEntity<ResponseDTO> getAnnouncements(HttpServletRequest request) throws UnsupportedEncodingException {
+
+        accessTokenValidation(request);
 
         HttpEntity<String> entity = makeEntity();
         String queryString = "";
@@ -69,8 +100,11 @@ public class AnnouncementApiController {
         return new ResponseEntity<ResponseDTO>(response.getBody(),headers,HttpStatus.valueOf(200));
     }
 
+    // 채용공고 추천
     @GetMapping("/recommendations")
-    public ResponseEntity<ResponseDTO> recommendAnnouncements() {
+    public ResponseEntity<ResponseDTO> recommendAnnouncements(HttpServletRequest request) {
+        accessTokenValidation(request);
+
         Map<String, List> mostUsedSearchConditions = searchHistoryRepository.findMostUsedSearchConditions();
 
         log.info("mostUsedSearchConditions = " + mostUsedSearchConditions);
